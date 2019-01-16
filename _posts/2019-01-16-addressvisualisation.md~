@@ -1,6 +1,6 @@
 ---
 title: "Project: Address Visualisation"
-date: 2019-01-16
+data: 2019-01-16
 tags: [visualisation, googlemaps, data science]
 header:
   images: "/images/addressvisualisation/hospital.jpg"
@@ -42,7 +42,7 @@ Python code block:
 Here's some inline code `x+y`
 
 Here's an image 
-<img src="{{ site.url }}{{ site.baseurl }}/images/addressvisualisation/peshmap.png" alt="Map of Peshawar, KPK, Pakistan">
+<img src="{{ site.url }}{{ site.baseurl }}/images/peshmap.png" alt="Map of Peshawar, KPK, Pakistan">
 
 Here's some latex too!
 $$z=\frac{x}{y}$$
