@@ -1,7 +1,7 @@
 ---
 title: "Project: Address Visualisation"
 date: 2019-01-16
-tags: [visualisation, googlemaps, data science]
+tags: [data science]
 header:
   images: "/images/addressvisualisation/hospital.jpg"
 excerpt: "Visualisation, Data Science"
