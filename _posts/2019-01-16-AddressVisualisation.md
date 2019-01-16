@@ -3,7 +3,7 @@ title: "Address Visualisation"
 date: 2019-01-16
 tags: [data science]
 header:
-  image: "/images/addressvisualisation/hospital.jpg"
+  image: "/images/addressvisualisation/hospital_front.jpg"
 excerpt: "Visualisation, Data Science"
 mathjax: "true"
 ---
