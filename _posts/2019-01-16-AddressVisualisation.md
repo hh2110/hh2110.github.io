@@ -1,6 +1,6 @@
 ---
 title: "Project: Address Visualisation"
-data: "2019-01-16
+data: 2019-01-16
 tags: [visualisation, googlemaps, data science]
 header:
   images: "/images/addressvisualisation/hospital.jpg"
@@ -48,7 +48,4 @@ Here's some latex too!
 $$z=\frac{x}{y}$$
 
 You can also put it inline $$z=x+y$$
-
-
-
 

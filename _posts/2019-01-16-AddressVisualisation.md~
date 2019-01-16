@@ -42,7 +42,7 @@ Python code block:
 Here's some inline code `x+y`
 
 Here's an image 
-<img src="{{ site.url }}{{ site.baseurl }}/images/peshmap.jpg" alt="Map of Peshawar, KPK, Pakistan">
+<img src="{{ site.url }}{{ site.baseurl }}/images/peshmap.png" alt="Map of Peshawar, KPK, Pakistan">
 
 Here's some latex too!
 $$z=\frac{x}{y}$$
