@@ -1,0 +1,8 @@
+---
+title: "About"
+permalink: /about/
+header:
+  image: "/images/desktop.png"
+---
+
+I'm a computational materials scientist who is close to completing his PhD in developing new cobalt based superalloys for gas turbine engines. Currently, I am learning about Data Science and am transitioning into the industry.

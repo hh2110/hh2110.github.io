@@ -107,7 +107,7 @@ analytics:
 # Site Author
 author:
   name             : "Hikmat Hasan"
-  avatar           : "/images/hh.jpg"
+  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "Data Science Journey"
   location         : "Stoke-On-Trent, UK"
   email            :
