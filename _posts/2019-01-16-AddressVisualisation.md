@@ -9,7 +9,7 @@ mathjax: "true"
 ---
 
 I volunteer for a charity based in Peshawar Pakistan, called [Abaseen 
-Institute for Medical Sciences](https://aimspk.abaseen.com) - AIMS. This 
+Institute for Medical Sciences](http://aimspk.abaseen.com) - AIMS. This 
 is a charity that strives to create a quality assured and affordable 
 diabetes healthcare institute. I am involved in the IT-based activities, 
 which gave me access to the hospital's data. 
