@@ -1,5 +1,5 @@
 ---
-title: "Project: Address Visualisation"
+title: "Address Visualisation"
 date: 2019-01-16
 tags: [data science]
 header:
