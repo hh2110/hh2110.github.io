@@ -23,7 +23,7 @@ maximise the number of patients visiting from that region.
 After isolating the addresses list and cleaning it up, by dealing with blank
 elements and characters such as '\r', we can use a library, googlemaps, to 
 search for longitude and latitude values for each address (this also requires
-and apikey, for more info visit[here](https://github.com/googlemaps/google-maps-services-python):
+an apikey, for more info visit [here](https://github.com/googlemaps/google-maps-services-python)):
 
 ```python
 	import pandas as pd
@@ -71,7 +71,43 @@ and apikey, for more info visit[here](https://github.com/googlemaps/google-maps-
 	time=datetime.now().strftime('%H%M')
 	data.to_csv('./data/GMapsAddress_'+time+'.csv')
 ```	
+
+Then we can use a really cool library called folium to plot a heatmap of the 
+lat and lon values superposed onto a map of Peshawar:
+
+```python
+	import folium
+	from folium.yyplugins import HeatMap
 	
+	# create dataframe
+	data = pd.read_csv('./data/GMapsAddressesAccurate_1848.csv', index_col=0)
+
+	# isloate the lon and lat data
+	latList=data["LAT"].values;
+	lonList=data["LON"].values;
+
+	# remove any None values for where lon and lat data could not be found
+	latList=latList[latList != np.array(None)]
+	lonList=lonList[lonList != np.array(None)]
+	
+	# use folium to add heat map to map of peshawar 
+	hmap = folium.Map(location=[33.99, 71.52], zoom_start=12, )
+	
+	heat = HeatMap( list(zip(data.LAT.values, data.LON.values)),
+    	               min_opacity=0.2,
+    	               max_val=100,
+        	           radius=20, blur=15, 
+            	       max_zoom=10, 
+                	 )
+
+	hmap.add_child(heat)
+	
+	time=datetime.now().strftime('%H%M')
+	hmap.save('./data/'+'folium_'+time+'.html')
+```
+
+A screenshot of the resulting map is shown below, but the interactive map can
+be accessed [here](./iteration0_folium.html)	
 
 
 
