@@ -107,13 +107,110 @@ lat and lon values superposed onto a map of Peshawar:
 ```
 
 A screenshot of the resulting map is shown below, but the interactive map can
-be accessed [here](./iteration0_folium.html)	
+be accessed [here](/extrahtml/iteration0_folium.html):
+
+<img src="{{ site.url }}{{ site.baseurl }}/images/addressvisualisation/initial.jpg" 
+alt="Initial heatmap">
+	
+The hospital in the map above is labelled by the red cross. One can see there are 
+many addresses near that location. Additioanlly, there is also a high density of 
+points in the grey-cricled region. When we investigate these points, they are in 
+fact partial matches from the address search by Google Maps and in turn, those
+searches have returned the general location as 'Peshawar'. 
+
+To fix this, we can run a test over the search results to see if they match the 
+addresses from the data - if there is a match then we can plot the result and if 
+not then we must mark it accordingly. This involves comparing the two sets of 
+strings: 1) the input address and 2) the search result. To compare the strings, we 
+can use the [Levenshtein distance](https://en.wikipedia.org/wiki/Levenshtein_distance) 
+paramter which can be measured for two strings, using the Levenshtein library.
+
+```python
+	import Levenshtein as lev
+	
+	# levenshtein distance funtion
+	# to measure difference between two strings which could be multiple words
+	def SimilarityBtwStrings(inp, res):
+	    # only consider whole of input 
+        # but part of result - first 2 elements (separated by commas)
+	    
+	    # first get a list of result words
+	    rWordList=[]
+	    #list1 is based on commas
+	    list1=res.split(', ')[0:2] #this number 2 gets us the first 2 elements
+	    for rPhrase in list1:
+	        if ' ' in rPhrase:
+	            list2=rPhrase.split(' ')
+	            for rWord in list2:
+	                rWordList.append(rWord)
+	        else:
+	            rWordList.append(rPhrase)
+	    rWordList=[i.lower() for i in rWordList]
+	    
+	    iWordList=inp.strip().split(' ')
+	    iWordList=[i.lower() for i in iWordList]
+	
+		# compare the words in each List of strings
+		# as soon as we get a match (except for numbers, 'peshawar', 'phase)
+		# we return 1 which denotes a positive match
+	    for i in iWordList:
+	        for r in rWordList:
+	            if r!='peshawar' and i!='peshawar' and \
+	               r!='phase' and i!='phase' and \
+	               r.isdigit()!=True and i.isdigit()!=True:
+	                   if lev.distance(i,r) < 2: # tolerance level is 0 or 1
+	                       return 1
+	      
+	    return 0
+	
+	data = pd.read_csv("./data/GMapsAddress_1329.csv", index_col=0)
+
+	#will need a new column measuring precision
+	data['MATCHING']=None
+	
+	counter=0
+	for index, row in data.iterrows():
+	    inp1=row['pntAddress']
+	    res1=row['GMAPS_NAME']
+	    if type(res1)==str: #ignoring NaN values
+	        sim=SimilarityBtwStrings(inp1, res1)
+	        counter+=sim
+	        if sim==1:
+	            data.iat[index, data.columns.get_loc('MATCHING')]=1
+	        else:
+	            data.iat[index, data.columns.get_loc('MATCHING')]=0
+	
+	accuracy=round((counter/len(data))*100, 4)
+	print('accuracy of the results', accuracy) 
+	
+	data=data.loc[data['MATCHING']==1]
+	
+	#save the new dataframe that holds all the information
+	time=datetime.now().strftime('%H%M')
+	data.to_csv('./data/GMapsAddressesAccurate_'+time+'.csv')
+```
+
+The accuracy of the list of addresses is 50% when one considers a positive match
+to be perfect. A perfect match will result in a Levenshtein distance of 0. If we 
+increase this tolerance to 1 rather than 0, then our accuracy jumps up to 66%.
+Plotting only the 66% of so called accurate results yields the following heatmap (the
+interactive version can be accessed [here](/htmlpages/final.html)):
+
+<img src="{{ site.url }}{{ site.baseurl }}/images/addressvisualisation/final.jpg" 
+alt="Final heatmap">
+
+This heatmap can now be used by the management of AIMS to start targetting certain 
+areas to maximise the return of the charitable health camps.
+
+But what about the 34% of addresses that did not get a match. These addresses 
+mostly inldude strings with spelling mistakes. A clustering algorithm could be 
+used to group together similar strings. This algroithm could be informed by the 
+results of the 66% of addresses too (in the pipeline, so please stay tuned). 
+Additonally, the common areas within the city could form part of a drop down 
+list to increase the speed with which the hospital's reception records the 
+addresses of the patients.
 
 
 
-
-This is a map of Peshawar:
-<img src="{{ site.url }}{{ site.baseurl }}/images/addressvisualisation/peshmap.png" 
-alt="Map of Peshawar, KPK, Pakistan">
 
 
