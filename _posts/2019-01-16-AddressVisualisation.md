@@ -112,11 +112,13 @@ be accessed [here](/extrahtml/initial_folium.html):
 <img src="{{ site.url }}{{ site.baseurl }}/images/addressvisualisation/initial.jpg" 
 alt="Initial heatmap">
 	
-The hospital in the map above is labelled by the red cross. One can see there are 
+The hospital in the map above is labelled by the red letter H. One can see there are 
 many addresses near that location. Additioanlly, there is also a high density of 
-points in the grey-cricled region. When we investigate these points, they are in 
+points in the region labelled by a dashed white circle. 
+When we investigate these points, there are 2 scenarios: 1)they are in 
 fact partial matches from the address search by Google Maps and in turn, those
-searches have returned the general location as 'Peshawar'. 
+searches have returned the general location as 'Peshawar' OR 2) partial matches have
+lead to incorrect lon and lat values. 
 
 To fix this, we can run a test over the search results to see if they match the 
 addresses from the data - if there is a match then we can plot the result and if 
