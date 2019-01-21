@@ -107,7 +107,7 @@ lat and lon values superposed onto a map of Peshawar:
 ```
 
 A screenshot of the resulting map is shown below, but the interactive map can
-be accessed [here](./iteration0_folium.html)	
+be accessed [here](/extrahtml/iteration0_folium.html)	
 
 
 
