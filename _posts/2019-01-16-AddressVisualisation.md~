@@ -109,7 +109,7 @@ lat and lon values superposed onto a map of Peshawar:
 A screenshot of the resulting map is shown below, but the interactive map can
 be accessed [here](/extrahtml/initial_folium.html):
 
-<img src="{{ site.url }}{{ site.baseurl }}/images/addressvisualisation/initial.jpg" 
+<img src="{{ site.url }}{{ site.baseurl }}/images/addressvisualisation/initiall.jpg" 
 alt="Initial heatmap">
 	
 The hospital in the map above is labelled by the red letter H. One can see there are 
@@ -198,7 +198,7 @@ increase this tolerance to 1 rather than 0, then our accuracy jumps up to 66%.
 Plotting only the 66% of so called accurate results yields the following heatmap (the
 interactive version can be accessed [here](/htmlpages/final_folium.html)):
 
-<img src="{{ site.url }}{{ site.baseurl }}/images/addressvisualisation/final.jpg" 
+<img src="{{ site.url }}{{ site.baseurl }}/images/addressvisualisation/finall.jpg" 
 alt="Final heatmap">
 
 This heatmap can now be used by the management of AIMS to start targetting certain 
