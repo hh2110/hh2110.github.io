@@ -112,7 +112,8 @@ be accessed [here](/extrahtml/initial_folium.html):
 <img src="{{ site.url }}{{ site.baseurl }}/images/addressvisualisation/initiall.jpg" 
 alt="Initial heatmap">
 	
-The hospital in the map above is labelled by the red letter H. One can see there are 
+The hospital in the map above is 
+labelled by the red letter H. One can see there are 
 many addresses near that location. Additioanlly, there is also a high density of 
 points in the region labelled by a dashed white circle. 
 When we investigate these points, there are 2 scenarios: 1)they are in 
