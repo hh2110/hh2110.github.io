@@ -87,8 +87,8 @@ lat and lon values superposed onto a map of Peshawar:
 	lonList=data["LON"].values;
 
 	# remove any None values for where lon and lat data could not be found
-	latList=latList[latList != np.array(None)]
-	lonList=lonList[lonList != np.array(None)]
+	latList=latList[np.isfinite(latList)]
+	lonList=lonList[np.isfinite(lonList)]
 	
 	# use folium to add heat map to map of peshawar 
 	hmap = folium.Map(location=[33.99, 71.52], zoom_start=12, )
