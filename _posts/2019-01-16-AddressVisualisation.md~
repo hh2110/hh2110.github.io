@@ -200,7 +200,7 @@ Plotting only the 66% of so called accurate results yields the following heatmap
 interactive version can be accessed [here](/htmlpages/final_folium.html)):
 
 <img src="{{ site.url }}{{ site.baseurl }}/images/addressvisualisation/final.jpg" 
-alt="Final heatmap">
+alt="Initial heatmap">
 
 This heatmap can now be used by the management of AIMS to start targetting certain 
 areas to maximise the return of the charitable health camps.

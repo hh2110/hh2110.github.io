@@ -197,7 +197,7 @@ The accuracy of the list of addresses is 50% when one considers a positive match
 to be perfect. A perfect match will result in a Levenshtein distance of 0. If we 
 increase this tolerance to 1 rather than 0, then our accuracy jumps up to 66%.
 Plotting only the 66% of so called accurate results yields the following heatmap (the
-interactive version can be accessed [here](/htmlpages/final_folium.html)):
+interactive version can be accessed [here](/extrahtml/final_folium.html)):
 
 <img src="{{ site.url }}{{ site.baseurl }}/images/addressvisualisation/final.jpg" 
 alt="Initial heatmap">
