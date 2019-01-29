@@ -37,9 +37,7 @@ testData['source'] = 'test'
 
 # combine data sets
 allData = pd.concat([trainData, testData], ignore_index=True)
-```
 
-```python
 # let's check the columns in allData for missing values
 print(allData.apply(lambda x: sum(x.isnull())))
 print('size of all data', allData.shape)
@@ -89,16 +87,10 @@ allData.dtypes
     source                        object
     dtype: object
 
-
-
-
 ```python
 # general stats on the data (float only)
 allData.describe()
 ```
-
-
-
 
 <div>
 <table border="1" class="dataframe">
@@ -181,15 +173,10 @@ allData.describe()
 </table>
 </div>
 
-
-
 Good idea would be to change outlet_est_year to age of company
-
 Additionally, the minimum item_vis of value 0.0 does not make sense
-
 The different sd's for the features needs to be noted incase we use
 non-scale invariant ML techniques
-
 
 ```python
 # info about features that are categorical rather than float
@@ -197,9 +184,6 @@ non-scale invariant ML techniques
 
 allData.apply(lambda x: len(x.unique()))
 ```
-
-
-
 
     Item_Fat_Content                 5
     Item_Identifier               1559
@@ -216,15 +200,7 @@ allData.apply(lambda x: len(x.unique()))
     source                           2
     dtype: int64
 
-
-
 let's consider specifically Item_Fat_Content, Item_Type & outlet_identifier, location type, size and type
-
-
-```python
-
-```
-
 
 ```python
 # need to create a list of column names which are of type object 
@@ -287,27 +263,22 @@ for col in object_columns:
     Supermarket Type3    1559
     Supermarket Type2    1546
     Name: Outlet_Type, dtype: int64 
-    
 
-
-for fat content - Low Fat and LF and low fat all belong to the same class
-same can be said for reg and Regular
-
-for item_type - maybe combining certain types of items may be better - 
-like all drinks
-
-
+For fat content - Low Fat and LF and low fat all belong to the same class
+same can be said for reg and Regular. For item_type - maybe combining certain 
+types of items may be better - like all drinks
 
 ## 2. Data Cleaning
 
 We will use the data we have to fill in the missing values for item weight and outlet size
 
-For missing values that are continuous the best thing to do is to take a mean of similar items and replace the missing values for the corresponding mean
+For missing values that are continuous the best thing to do is to take a mean of similar 
+items and replace the missing values for the corresponding mean
 
 For categorical missing values it is best to consider mode.
 
-Using both a boolean array (locating the missing values) and a pd series which contains the means or modes, we can then replace the missing values in the pd df using loc - see below.
-
+Using both a boolean array (locating the missing values) and a pd series which contains 
+the means or modes, we can then replace the missing values in the pd df using loc - see below.
 
 ```python
 # for the 2439 missing item weight values we can can average over the 
@@ -332,10 +303,8 @@ missingWeigths = allData['Item_Weight'].isnull()
 # to the item_identifier
 allData.loc[missingWeigths, 'Item_Weight'] = \
     allData.loc[missingWeigths, 'Item_Identifier'].apply(
-        lambda x: averageWeightsDS[x])
-    
+        lambda x: averageWeightsDS[x])    
 ```
-
 
 ```python
 # for the 4016 missing values for outlet size - we can use the mode 
@@ -366,10 +335,10 @@ allData.loc[missingOSValues, 'Outlet_Size'] = \
     lambda x: modeOutletSize[x])
 ```
 
-there are some items that have 0.0 visibility - this does not make sense
+There are some items that have 0.0 visibility - this does not make sense
 if they are being sold in a store - therefore we can take the unique
-Item_Identifier and create an average visibility for each Item_Identifier - this can then be used along with a boolean to remove 0.0 visibilty values
-
+Item_Identifier and create an average visibility for each Item_Identifier - 
+this can then be used along with a boolean to remove 0.0 visibilty values
 
 ```python
 # first we need the average weight for each item identifier:
@@ -392,27 +361,13 @@ allData.loc[zeroVisBoolean, 'Item_Identifier']. apply(
 lambda x: averageVis[x])
 ```
 
-
-```python
-
-```
-
-
-```python
-
-```
-
 ## 3. Feature Engineering
 
 There are 16 Item types:
 
-
 ```python
 allData['Item_Type'].value_counts()
 ```
-
-
-
 
     Fruits and Vegetables    2013
     Snack Foods              1989
@@ -432,14 +387,11 @@ allData['Item_Type'].value_counts()
     Seafood                    89
     Name: Item_Type, dtype: int64
 
-
-
 We could possibly combine certain items together 
 In the Item_Identifier which is a unique item id for each item, 
 we can see id's beginning with FD, DR or NC - which probably stand
 for Food, Drinks and Non-consumables - so we can make a custom
 item type column
-
 
 ```python
 # new column to be based on the first two elements of the item
@@ -449,28 +401,20 @@ allData['New_Item_Type'] = allData['Item_Identifier'].apply(
 
 allData['New_Item_Type'].value_counts()
 ```
-
-
-
-
     FD    10201
     NC     2686
     DR     1317
     Name: New_Item_Type, dtype: int64
 
-
-
-As mentioned above, we should also have a column that describes the number of years a store has been open rather then the outlet establishment year (year data was recorded is 2013)
-
+As mentioned above, we should also have a column that describes 
+the number of years a store has been open rather then the outlet 
+establishment year (year data was recorded is 2013)
 
 ```python
 allData['Outlet_Age'] = allData['Outlet_Establishment_Year'].apply(
                         lambda x: 2013-x)
 allData['Outlet_Age'].describe()
 ```
-
-
-
 
     count    14204.000000
     mean        15.169319
@@ -482,17 +426,12 @@ allData['Outlet_Age'].describe()
     max         28.000000
     Name: Outlet_Age, dtype: float64
 
-
-
-As mentioned previously, the fat content labels have some overalp so it would be better to combine some values
-
+As mentioned previously, the fat content labels have some overlap so it 
+would be better to combine some values
 
 ```python
 allData['Item_Fat_Content'].value_counts()
 ```
-
-
-
 
     Low Fat    8485
     Regular    4824
@@ -501,9 +440,6 @@ allData['Item_Fat_Content'].value_counts()
     low fat     178
     Name: Item_Fat_Content, dtype: int64
 
-
-
-
 ```python
 allData['Item_Fat_Content'] = allData['Item_Fat_Content'].replace(
             {'LF':'Low Fat', 'low fat':'Low Fat', 
@@ -511,17 +447,13 @@ allData['Item_Fat_Content'] = allData['Item_Fat_Content'].replace(
 allData['Item_Fat_Content'].value_counts()
 ```
 
-
-
-
     Low Fat    9185
     Regular    5019
     Name: Item_Fat_Content, dtype: int64
 
-
-
-But all items should not be either Low Fat or Regular since, we have a new item type of NC - so we should re-label the item fat content for the NC's as 'non-edible'    
-
+But all items should not be either Low Fat or Regular since, we have a new 
+item type of NC - so we should re-label the item fat content for the NC's 
+as 'non-edible'    
 
 ```python
 allData.loc[allData['New_Item_Type']=='NC', 
@@ -530,21 +462,20 @@ allData.loc[allData['New_Item_Type']=='NC',
 allData['Item_Fat_Content'].value_counts()
 ```
 
-
-
-
     Low Fat       6499
     Regular       5019
     Non Edible    2686
     Name: Item_Fat_Content, dtype: int64
 
+The categorical variables need to be replaced with integers so sklearn can 
+be used with this data. 
 
+First the categorical values need to be replaced with integers. So if new item 
+types are lf r ne, then they will be replaced by 0 1 2. This can be done using 
+le.fit_transform 
 
-The categorical variables need to be replaced with integers so sklearn can be used with this data. 
-
-First the categorical values need to be replaced with integers. So if new item types has lf r ne, then they will be replaced by 0 1 2. This can be done using le.fit_transform 
-
-The get_dummies method from pandas, will create 3 new corresponding dummy variables new_item_type_i i-{0,1,2} with 0 or 1 values. 
+The get_dummies method from pandas, will create 3 new corresponding dummy 
+variables new_item_type_i i-{0,1,2} with 0 or 1 values. 
 
 
 ```python
@@ -564,13 +495,9 @@ for i in listOfColumns:
 allData = pd.get_dummies(allData, columns = listOfColumns)
 ```
 
-
 ```python
 allData.dtypes
 ```
-
-
-
 
     Item_Identifier               object
     Item_MRP                     float64
@@ -610,15 +537,7 @@ allData.dtypes
     Outlet_9                       uint8
     dtype: object
 
-
-
-
-```python
-
-```
-
 Now we must convert the data back to test and train and save accordingly
-
 
 ```python
 # Drop the columns which have been converted to different types:
@@ -640,258 +559,11 @@ newTrainData.to_csv('train_modified.csv', index=False)
 newTestData.to_csv('test_modified.csv', index=False)
 ```
 
-
-```python
-
-```
-
-
-```python
-
-```
-
 # 4. Model Building
 
-
-
-
-```python
-newTrainData.describe()
-```
-
-
-
-
-<div>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>Item_MRP</th>
-      <th>Item_Outlet_Sales</th>
-      <th>Item_Visibility</th>
-      <th>Item_Weight</th>
-      <th>Outlet_Age</th>
-      <th>Item_Fat_Content_0</th>
-      <th>Item_Fat_Content_1</th>
-      <th>Item_Fat_Content_2</th>
-      <th>Outlet_Location_Type_0</th>
-      <th>Outlet_Location_Type_1</th>
-      <th>...</th>
-      <th>Outlet_0</th>
-      <th>Outlet_1</th>
-      <th>Outlet_2</th>
-      <th>Outlet_3</th>
-      <th>Outlet_4</th>
-      <th>Outlet_5</th>
-      <th>Outlet_6</th>
-      <th>Outlet_7</th>
-      <th>Outlet_8</th>
-      <th>Outlet_9</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>...</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-      <td>8523.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>140.992782</td>
-      <td>2181.288914</td>
-      <td>0.069941</td>
-      <td>12.873623</td>
-      <td>15.168133</td>
-      <td>0.459697</td>
-      <td>0.187610</td>
-      <td>0.352693</td>
-      <td>0.280183</td>
-      <td>0.326763</td>
-      <td>...</td>
-      <td>0.065118</td>
-      <td>0.109351</td>
-      <td>0.108647</td>
-      <td>0.108882</td>
-      <td>0.061950</td>
-      <td>0.109703</td>
-      <td>0.109117</td>
-      <td>0.108999</td>
-      <td>0.109117</td>
-      <td>0.109117</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>62.275067</td>
-      <td>1706.499616</td>
-      <td>0.049856</td>
-      <td>4.645893</td>
-      <td>8.371760</td>
-      <td>0.498402</td>
-      <td>0.390423</td>
-      <td>0.477836</td>
-      <td>0.449115</td>
-      <td>0.469057</td>
-      <td>...</td>
-      <td>0.246748</td>
-      <td>0.312098</td>
-      <td>0.311214</td>
-      <td>0.311509</td>
-      <td>0.241079</td>
-      <td>0.312538</td>
-      <td>0.311804</td>
-      <td>0.311656</td>
-      <td>0.311804</td>
-      <td>0.311804</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>31.290000</td>
-      <td>33.290000</td>
-      <td>0.003575</td>
-      <td>4.555000</td>
-      <td>4.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>...</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>93.826500</td>
-      <td>834.247400</td>
-      <td>0.031228</td>
-      <td>8.785000</td>
-      <td>9.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>...</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>143.012800</td>
-      <td>1794.331000</td>
-      <td>0.057249</td>
-      <td>12.600000</td>
-      <td>14.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>...</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>185.643700</td>
-      <td>3101.296400</td>
-      <td>0.097383</td>
-      <td>16.850000</td>
-      <td>26.000000</td>
-      <td>1.000000</td>
-      <td>0.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>...</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>266.888400</td>
-      <td>13086.964800</td>
-      <td>0.328391</td>
-      <td>21.350000</td>
-      <td>28.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>...</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-      <td>1.000000</td>
-    </tr>
-  </tbody>
-</table>
-<p>8 rows × 31 columns</p>
-</div>
-
-
-
-To start we will create a baseline model to which we can compare our subsequent ML models - our baseline will predict the item sales to be the average for that item identifier
-
+To start we will create a baseline model to which we can compare our 
+subsequent ML models - our baseline will predict the item sales to 
+be the average for that item identifier
 
 ```python
 # get the unique items in the df
@@ -904,10 +576,7 @@ averageSalesPerItemID = [newTrainData.loc[
 
 #create a data series for the item ID and average sales
 averageSalesPerItemID = pd.Series(averageSalesPerItemID, index=uniqueItemList)
-
-
 ```
-
 
 ```python
 baseLine = newTestData.loc[:,['Item_Identifier', 'Outlet_Identifier']]
@@ -917,8 +586,10 @@ baseLine['Item_Outlet_Sales'] = baseLine['Item_Identifier'].apply(
 baseLine.to_csv('baseLine.csv', index=False)
 ```
 
-This simple method gets a score of 1599 - we can compare our subsequent ML models to this now. Since we will be considering multiple models, its best practice to create a function that will take a model, the data, carry out cross validation and produce a submission file
-
+This simple method gets a score of 1599 - we can compare our subsequent ML models 
+to this now. Since we will be considering multiple models, its best practice to 
+create a function that will take a model, the data, carry out cross validation 
+and produce a submission file plus a accuracy score on the test data
 
 ```python
 from sklearn.model_selection import cross_val_score
@@ -956,15 +627,9 @@ def ModelFit(algo, trainSet, testSet, predictors, fileName,
         
 ```
 
-
-```python
-
-```
-
 ## Linear Regression
 
 Our first attempt will be the simplest!
-
 
 ```python
 target='Item_Outlet_Sales'
@@ -993,20 +658,11 @@ plt.show()
      Model Report
     Accuracy: 0.56 (+/- 0.04)
 
-
-
-![png](IntroToML_files/IntroToML_56_1.png)
-
+![png](/images/MLPipeline-BigMartSales/IntroToML_56_1.png)
 
 the score of the above linear regression model is 1203 after submission
 
-some coefficients are very large - try regularisation now
-
-
-```python
-
-```
-
+some coefficients are very large - try regularisation now, via ridge regression
 
 ```python
 algo_LR_ridge = Ridge(alpha=0.1, normalize=True)
@@ -1023,15 +679,11 @@ plt.show()
      Model Report
     Accuracy: 0.56 (+/- 0.04)
 
-
-
-![png](IntroToML_files/IntroToML_59_1.png)
-
+![png](/images/MLPipeline-BigMartSales/IntroToML_59_1.png)
 
 The above submission gives a score of 1203 too so let's try a different method
 
 ## Decision Trees
-
 
 ```python
 from sklearn.tree import DecisionTreeRegressor
@@ -1051,11 +703,7 @@ plt.show()
      Model Report
     Accuracy: 0.59 (+/- 0.06)
 
-
-
-![png](IntroToML_files/IntroToML_62_1.png)
-
-
+![png](/images/MLPipeline-BigMartSales/IntroToML_62_1.png)
 
 ```python
 # Take the 5 most important features and use them only in another decision tree
@@ -1077,13 +725,9 @@ plt.show()
      Model Report
     Accuracy: 0.58 (+/- 0.07)
 
-
-
-![png](IntroToML_files/IntroToML_63_1.png)
-
+![png](/images/MLPipeline-BigMartSales/IntroToML_63_1.png)
 
 Above only gets 1169
-
 
 ```python
 #let's try a random forest 
@@ -1104,14 +748,8 @@ plt.show()
      Model Report
     Accuracy: 0.59 (+/- 0.05)
 
+![png](/images/MLPipeline-BigMartSales/IntroToML_65_1.png)
 
-
-![png](IntroToML_files/IntroToML_65_1.png)
-
-
-
-```python
-
-```
-
-
+We could continue to try to play with the parameters but rather than that let's take 
+a re-look at the data using seaborn and see if we can use gradient boosting to increase
+out accuracy to more than 60%
