@@ -5,4 +5,9 @@ header:
   image: "/images/desktop_about.jpg"
 ---
 
-I'm a computational materials scientist who is close to completing his PhD in developing new cobalt based superalloys for gas turbine engines. Currently, I am learning about Data Science and am transitioning into the industry.
+I'm a Data Scientist who is interested in the Natural Language Processing space.
+
+I currently work for a Data Science and Analytics consultancy. I have worked in the 
+Pharmaceutical and Consumer industry on data science projects as well as modelling projects.
+
+This webiste is a collection of projects I do in my spare time to enhance my skill set. Enjoy!
